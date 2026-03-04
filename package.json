@@ -1,0 +1,34 @@
+{
+  "name": "chatgpt-autoinvite-bot",
+  "version": "2.0.0",
+  "description": "WhatsApp Bot untuk auto invite ChatGPT team dengan multiple accounts",
+  "main": "bot.js",
+  "type": "module",
+  "scripts": {
+    "install-browser": "playwright install chromium",
+    "start": "node bot.js",
+    "login": "node login-chatgpt.js",
+    "invite": "node invite-team.js"
+  },
+  "keywords": [
+    "whatsapp",
+    "baileys",
+    "chatgpt",
+    "playwright",
+    "automation",
+    "bot"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "@whiskeysockets/baileys": "^6.7.21",
+    "dotenv": "^16.6.1",
+    "pino": "^8.21.0",
+    "playwright": "^1.57.0",
+    "playwright-extra": "^4.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "qrcode-terminal": "^0.12.0",
+    "speakeasy": "^2.0.0"
+  }
+}
