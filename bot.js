@@ -611,18 +611,24 @@ class WhatsAppBot {
         const canInvite = this.userManager.canInvite(userKey);
         if (!canInvite) {
             const userStats = this.userManager.getUserStats(userKey);
-            const resetTime = new Date();
-            resetTime.setDate(resetTime.getDate() + 1);
-            resetTime.setHours(0, 0, 0, 0);
 
-            await this.sendMessage(from,
-                `❌ *Limit Invite Habis!*\n\n` +
-                `📊 Plan: ${userStats.type.toUpperCase()}\n` +
-                `📧 Terpakai: ${userStats.usedToday}/${userStats.dailyLimit}\n` +
-                `⏰ Reset: Besok jam 00:00\n\n` +
-                `💎 Upgrade ke Premium untuk 10 invite/hari!\n` +
-                `Hubungi owner untuk upgrade.`
-            );
+            if (userStats.type === 'free') {
+                await this.sendMessage(from,
+                    `❌ *Limit Invite Habis!*\n\n` +
+                    `📊 Plan: FREE\n` +
+                    `📧 Terpakai: ${userStats.usedToday}/${userStats.dailyLimit}\n` +
+                    `🚫 Kuota free hanya 1x (tidak reset)\n\n` +
+                    `💎 Upgrade ke Premium untuk 5 invite/hari!\n` +
+                    `Hubungi owner untuk upgrade.`
+                );
+            } else {
+                await this.sendMessage(from,
+                    `❌ *Limit Invite Habis!*\n\n` +
+                    `📊 Plan: PREMIUM\n` +
+                    `📧 Terpakai: ${userStats.usedToday}/${userStats.dailyLimit}\n` +
+                    `⏰ Reset: Besok jam 00:00 WIB`
+                );
+            }
             return;
         }
 
@@ -672,7 +678,7 @@ class WhatsAppBot {
             // Member info
             const timeLeft = this.memberManager.getTimeRemaining(memberRecord);
             statusMessage += `\n\n📋 *Detail Langganan*`;
-            statusMessage += `\n📅 Plan: ${userPlan === '1month' ? '1 Bulan' : '1 Minggu'}`;
+            statusMessage += `\n📅 ChatGPT Invite: ${userPlan === '1month' ? '1 Bulan' : '1 Minggu'}`;
             statusMessage += `\n⏳ Aktif sampai: ${new Date(memberRecord.expiresAt).toLocaleDateString('id-ID')}`;
             statusMessage += `\n⏰ Sisa waktu: ${timeLeft}`;
 
