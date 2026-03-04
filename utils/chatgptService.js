@@ -246,6 +246,22 @@ class ChatGPTService {
         try {
             await this.handleWorkspaceOnboarding(page);
 
+            // Handle workspace selection (needed after first login)
+            try {
+                await page.waitForSelector('text=Select a workspace', { timeout: 5000 });
+                const workspaceButtons = await page.locator('button[role="radio"], div[role="radio"]').all();
+                for (const btn of workspaceButtons) {
+                    const text = await btn.textContent();
+                    if (text && !text.includes('Personal account')) {
+                        await btn.click();
+                        await page.waitForTimeout(1000);
+                        break;
+                    }
+                }
+                await page.waitForLoadState('networkidle', { timeout: 60000 });
+                console.log('✅ Workspace dipilih');
+            } catch (e) { /* no workspace selection needed */ }
+
             // Buka invite via profile menu
             console.log('🔍 Membuka invite dialog...');
             let inviteClicked = false;
